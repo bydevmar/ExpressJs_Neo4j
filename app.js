@@ -6,11 +6,20 @@ const app = express();
 const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "password"));
 
 // Import routes
-const usersRoutes = require('./routes/getAllUsers')(driver);
-const platformRoutes = require('./routes/getAllPlatforms')(driver);
-const postRoutes = require('./routes/getAllPosts')(driver);
+const getUsersRoutes = require('./routes/getAllUsers')(driver);
+const getPlatformRoutes = require('./routes/getAllPlatforms')(driver);
+const getPostRoutes = require('./routes/getAllPosts')(driver);
 
-app.use('/api', [usersRoutes , platformRoutes , postRoutes]);
+//create nodes
+const postUsersRoutes = require('./routes/CreateUser')(driver);
+const postPostsRoutes = require('./routes/CreatePost')(driver);
+const postPlatformsRoutes = require('./routes/CreatePlatform')(driver);
+
+app.use('/api', [getUsersRoutes , getPlatformRoutes , getPostRoutes ,
+                postUsersRoutes , postPostsRoutes , postPlatformsRoutes
+
+
+]);
 
 app.listen(3000, () => {
   console.log('Server listening on port 3000');
